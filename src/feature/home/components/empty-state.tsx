@@ -7,9 +7,9 @@ import type { BottomTabNavigationProp } from "@react-navigation/bottom-tabs";
 import { Icon } from "@/components/ui/icon";
 import { Text } from "@/components/ui/text";
 import { Button } from "@/components/ui/button";
-import { type AuthenticatedRoutesParamList } from "@/router/types";
+import { type AuthenticatedTabsParamList } from "@/router/types";
 
-type NavigationProp = BottomTabNavigationProp<AuthenticatedRoutesParamList>;
+type NavigationProp = BottomTabNavigationProp<AuthenticatedTabsParamList>;
 
 export function EmptyState() {
   const navigation = useNavigation<NavigationProp>();

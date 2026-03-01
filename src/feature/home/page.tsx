@@ -1,17 +1,32 @@
-import React from "react";
+import React, { useCallback } from "react";
 import { View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { LegendList } from "@legendapp/list";
+import { observer } from "@legendapp/state/react";
+import { useNavigation } from "@react-navigation/native";
+import { type StackNavigationProp } from "@react-navigation/stack";
 
 import { Text } from "@/components/ui/text";
+import { type Ticket } from "@/data/states/tickets";
+import { type AuthenticatedRoutesParamList } from "@/router/types";
 import useHomeLogic from "./use-home-logic";
 import { FilterHeader } from "./components/filter-header";
 import { TicketCard } from "./components/ticket-card";
 import { EmptyState } from "./components/empty-state";
 
-export const HomeScreen = () => {
+type NavigationProp = StackNavigationProp<AuthenticatedRoutesParamList>;
+
+export const HomeScreen = observer(() => {
   const { tickets, filteredTickets, selectedFilter, setSelectedFilter } =
     useHomeLogic();
+  const navigation = useNavigation<NavigationProp>();
+
+  const handleTicketPress = useCallback(
+    (ticket: Ticket) => {
+      navigation.navigate("TicketDetail", { ticketId: ticket.id });
+    },
+    [navigation],
+  );
 
   return (
     <SafeAreaView edges={["bottom"]} className="flex-1 bg-background">
@@ -20,7 +35,9 @@ export const HomeScreen = () => {
         data={filteredTickets}
         keyExtractor={(item) => item.id}
         contentContainerClassName="px-4 py-4 gap-3 flex-grow"
-        renderItem={({ item }) => <TicketCard ticket={item} />}
+        renderItem={({ item }) => (
+          <TicketCard ticket={item} onPress={handleTicketPress} />
+        )}
         ListEmptyComponent={<EmptyState />}
         ListHeaderComponent={
           tickets.length > 0 ? (
@@ -29,7 +46,8 @@ export const HomeScreen = () => {
             </View>
           ) : null
         }
+        recycleItems
       />
     </SafeAreaView>
   );
-};
+});
