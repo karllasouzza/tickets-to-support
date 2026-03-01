@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import {
   FlatList,
   useWindowDimensions,
@@ -26,24 +26,27 @@ export const OverviewScreen = ({}) => {
     }
   }, [current_slide]);
 
-  const handleScrollEnd = (event: NativeSyntheticEvent<NativeScrollEvent>) => {
-    const contentOffsetX = event.nativeEvent.contentOffset.x;
-    const currentIndex = Math.round(contentOffsetX / width);
+  const handleScrollEnd = useCallback(
+    (event: NativeSyntheticEvent<NativeScrollEvent>) => {
+      const contentOffsetX = event.nativeEvent.contentOffset.x;
+      const currentIndex = Math.round(contentOffsetX / width);
 
-    if (currentIndex > current_slide) {
-      setCurrentSlide((prev) => prev + 1);
-    } else if (currentIndex < current_slide) {
-      setCurrentSlide((prev) => prev - 1);
-    }
-  };
+      if (currentIndex > current_slide) {
+        setCurrentSlide((prev) => prev + 1);
+      } else if (currentIndex < current_slide) {
+        setCurrentSlide((prev) => prev - 1);
+      }
+    },
+    [current_slide, width],
+  );
 
-  const handleNext = () => {
+  const handleNext = useCallback(() => {
     setCurrentSlide((prev) => prev + 1);
-  };
+  }, []);
 
-  const handlePrevious = () => {
+  const handlePrevious = useCallback(() => {
     setCurrentSlide((prev) => prev - 1);
-  };
+  }, []);
 
   return (
     <SafeAreaView

@@ -8,35 +8,38 @@ interface SlideItemProps {
   item: OverviewSlide;
 }
 
-export const OnboardingContainerItem = ({ item }: SlideItemProps) => {
-  const { width } = useWindowDimensions();
+export const OnboardingContainerItem = React.memo(
+  ({ item }: SlideItemProps) => {
+    const { width } = useWindowDimensions();
 
-  return (
-    <View
-      style={{ width }}
-      className="flex flex-1 flex-col items-center justify-start gap-6"
-      testID="onboarding-item-container"
-    >
-      <View className="h-full max-h-[400px] w-full flex-1 items-center justify-center">
-        <Image
-          source={item.content.img}
-          resizeMode="contain"
-          className="size-full"
-          testID="onboarding-item-image"
-        />
-      </View>
-
+    return (
       <View
-        className="w-full items-center gap-2 px-4"
-        testID="onboarding-item-text-content"
+        style={{ width }}
+        className="flex flex-1 flex-col items-center justify-start gap-6"
+        testID="onboarding-item-container"
       >
-        <Text variant="h2" className="border-0 text-center">
-          {item.content.title}
-        </Text>
-        <Text variant="default" className="text-center">
-          {item.content.subtitle}
-        </Text>
+        <View className="h-full max-h-[400px] w-full flex-1 items-center justify-center">
+          <Image
+            source={item.content.img}
+            resizeMode="contain"
+            className="size-full"
+            testID="onboarding-item-image"
+          />
+        </View>
+
+        <View
+          className="w-full items-center gap-2 px-4"
+          testID="onboarding-item-text-content"
+        >
+          <Text variant="h2" className="border-0 text-center">
+            {item.content.title}
+          </Text>
+          <Text variant="default" className="text-center">
+            {item.content.subtitle}
+          </Text>
+        </View>
       </View>
-    </View>
-  );
-};
+    );
+  },
+);
+OnboardingContainerItem.displayName = "OnboardingContainerItem";
