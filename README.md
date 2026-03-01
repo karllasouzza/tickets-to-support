@@ -1,97 +1,100 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+# Tickets to Support
 
-# Getting Started
+Aplicativo mobile em React Native para gestão de tickets de suporte com persistência local.
 
-> **Note**: Make sure you have completed the [Set Up Your Environment](https://reactnative.dev/docs/set-up-your-environment) guide before proceeding.
+## Visão geral
 
-## Step 1: Start Metro
+Este projeto implementa um fluxo de autenticação local e um app autenticado com:
 
-First, you will need to run **Metro**, the JavaScript build tool for React Native.
+- Lista de tickets
+- Criação de ticket
+- Detalhes e encerramento de ticket
+- Dashboard com métricas e visualizações
 
-To start the Metro dev server, run the following command from the root of your React Native project:
+## Tecnologias
 
-```sh
-# Using npm
-npm start
+### Core
 
-# OR using Yarn
+- React Native 0.82
+- React 19
+- TypeScript
+- React Navigation (stack + bottom tabs)
+
+### Estado e persistência
+
+- Legend State
+- MMKV (persistência local)
+
+### Formulários e validação
+
+- React Hook Form
+- Zod
+
+### UI e experiência
+
+- NativeWind (Tailwind para React Native)
+- rn-primitives
+- Lucide React Native (ícones)
+- Sonner Native (toasts)
+
+### Dados e visualização
+
+- react-native-gifted-charts (gráfico de pizza)
+- FlatList/LegendList (listas e carrossel)
+
+## Estrutura principal
+
+- src/router: rotas públicas e autenticadas
+- src/data/states: estados e persistência local
+- src/feature: módulos por domínio (overview, auth, tickets, dashboard)
+- src/components: componentes de UI e layouts compartilhados
+
+## Como rodar
+
+### Pré-requisitos
+
+- Node >= 20
+- Yarn
+- Ambiente React Native configurado para Android/iOS
+
+### Comandos
+
+```bash
+yarn
 yarn start
-```
-
-## Step 2: Build and run your app
-
-With Metro running, open a new terminal window/pane from the root of your React Native project, and use one of the following commands to build and run your Android or iOS app:
-
-### Android
-
-```sh
-# Using npm
-npm run android
-
-# OR using Yarn
 yarn android
-```
-
-### iOS
-
-For iOS, remember to install CocoaPods dependencies (this only needs to be run on first clone or after updating native deps).
-
-The first time you create a new project, run the Ruby bundler to install CocoaPods itself:
-
-```sh
-bundle install
-```
-
-Then, and every time you update your native dependencies, run:
-
-```sh
-bundle exec pod install
-```
-
-For more information, please visit [CocoaPods Getting Started guide](https://guides.cocoapods.org/using/getting-started.html).
-
-```sh
-# Using npm
-npm run ios
-
-# OR using Yarn
+# ou
 yarn ios
 ```
 
-If everything is set up correctly, you should see your new app running in the Android Emulator, iOS Simulator, or your connected device.
+## Tabela de acompanhamento (status)
 
-This is one way to run your app — you can also build it directly from Android Studio or Xcode.
+| Área         | Item                                                            | Status   | Observação                    |
+| ------------ | --------------------------------------------------------------- | -------- | ----------------------------- |
+| Arquitetura  | TypeScript + componentes funcionais + hooks                     | ✅ Feito | Estrutura modular por feature |
+| Persistência | Dados locais sem API externa                                    | ✅ Feito | Legend State + MMKV           |
+| Autenticação | Fluxo não autenticado + autenticado                             | ✅ Feito | Rotas separadas no router     |
+| Tickets      | Listagem com ordenação por data (desc)                          | ✅ Feito | Ordenação por createdAt       |
+| Tickets      | Criação de ticket                                               | ✅ Feito | Cria e redireciona para lista |
+| Tickets      | Detalhe e alteração de status                                   | ✅ Feito | Atualização no estado local   |
+| Encerramento | Descrição de encerramento obrigatória para status de fechamento | ✅ Feito | Validação com RHF + Zod       |
+| Dashboard    | Pizza por status + métricas + top 5                             | ✅ Feito | Métricas e carrossel          |
 
-## Step 3: Modify your app
+## Registro de ações e decisões
 
-Now that you have successfully run the app, let's make changes!
+### Arquitetura
 
-Open `App.tsx` in your text editor of choice and make some changes. When you save, your app will automatically update and reflect these changes — this is powered by [Fast Refresh](https://reactnative.dev/docs/fast-refresh).
+Resumo da arquitetura adotada:
 
-When you want to forcefully reload, for example to reset the state of your app, you can perform a full reload:
+- Eu decidi implementar uma arquitetura baseada em funcionalidades principalmente pela organização e distribuição de responsabilidades entre cada uma das features. Decidi exandir algumas cosias alem do pedido e utilizar tecnologias novas e focadas em desenpenho que explicarei abaixo.
 
-- **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Dev Menu**, accessed via <kbd>Ctrl</kbd> + <kbd>M</kbd> (Windows/Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (macOS).
-- **iOS**: Press <kbd>R</kbd> in iOS Simulator.
+### Tecnologias
 
-## Congratulations! :tada:
+Principalmente eu trouxe o Legend State juntamente com o MMKV que trazem muita performance e possibilitam a sincronização fácil com qualquer banco ou api externa. Escolhi usar o Legend List na lista de ticks também focando em ganho de performance.
+Utilizei o Nativewind junto com o react native reusables para padronizar o layout e permitir uma melhor consistência entre telas e componentes de UI.
+Utilizei o zod junto com react hook forms para validar e garantir que os dados dos formulários sejam consistentes e que as regras de negócio sejam respeitadas.
+Utilizei algumas imagens geradas por IA para dar uma cara mais realista ao app.
 
-You've successfully run and modified your React Native App. :partying_face:
+## Considerações finais
 
-### Now what?
-
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [docs](https://reactnative.dev/docs/getting-started).
-
-# Troubleshooting
-
-If you're having issues getting the above steps to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
-
-# Learn More
-
-To learn more about React Native, take a look at the following resources:
-
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
+Adorei o desafio, gosto sempre de estar desenvolvendo, seja no front, back ou mobile. Espero que gostem do app e se quiserem conversar sobre ou tirar alguma duvida, fiquem a vontade.
