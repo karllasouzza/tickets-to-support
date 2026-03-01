@@ -10,7 +10,7 @@ import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { PublicRoutesParamList } from "@/router/types";
 
-import Illustration1 from "../../../assets/images/pexels-snapwire-7470.jpg";
+import Illustration1 from "../../../assets/adaptive-icon.png";
 
 export const AuthScreen = () => {
   const navigation =
@@ -21,7 +21,7 @@ export const AuthScreen = () => {
         <Image
           source={Illustration1}
           resizeMode="contain"
-          className="size-[300px]"
+          className="w-[300px] h-[300px]"
           testID="onboarding-item-image"
         />
         <Text variant="h2" className="border-0 text-center">
@@ -34,8 +34,8 @@ export const AuthScreen = () => {
 
       <View className="w-full max-h-10 mt-auto items-center justify-center gap-2 flex flex-row">
         <View className="w-full h-px bg-muted flex-1" />
-        <Icon as={HatGlasses} size={24} className="text-muted" />
-        <Text variant="default" className="text-center text-muted">
+        <Icon as={HatGlasses} size={24} className="text-muted-foreground" />
+        <Text variant="default" className="text-center text-muted-foreground">
           Dados 100% local
         </Text>
         <View className="w-full h-px bg-muted flex-1" />
