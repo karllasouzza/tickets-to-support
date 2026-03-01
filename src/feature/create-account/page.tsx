@@ -12,7 +12,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Icon } from "@/components/ui/icon";
 
 import useCreateAccountData from "./use-create-account-data";
-import Illustration1 from "../../../assets/images/pexels-snapwire-7470.jpg";
+import Illustration1 from "../../../assets/adaptive-icon.png";
 
 export const CreateAccountScreen = () => {
   const {
@@ -116,7 +116,7 @@ export const CreateAccountScreen = () => {
                   <Icon
                     as={isPasswordVisible ? EyeOff : Eye}
                     size={20}
-                    className="text-muted"
+                    className="text-muted-foreground"
                   />
                 </Button>
               </View>

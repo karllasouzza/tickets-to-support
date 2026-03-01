@@ -1,6 +1,7 @@
 import React from "react";
 import { Image, Keyboard, View } from "react-native";
 import { Controller } from "react-hook-form";
+import { Eye, EyeOff } from "lucide-react-native";
 
 import { KeyboardSafeScrollLayout } from "@/components/layouts/keyboard-safe-scroll-layout";
 import { Label } from "@/components/ui/label";
@@ -8,15 +9,13 @@ import { Text } from "@/components/ui/text";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Icon } from "@/components/ui/icon";
 
 import { useLoginData } from "./use-login-data";
-import Illustration1 from "../../../assets/images/pexels-snapwire-7470.jpg";
-import { Eye, EyeOff } from "lucide-react-native";
-import { Icon } from "@/components/ui/icon";
+import Illustration1 from "../../../assets/adaptive-icon.png";
 
 export const LoginScreen = () => {
   const {
-    register,
     handleSubmit,
     control,
     onSubmit,
@@ -50,13 +49,17 @@ export const LoginScreen = () => {
         <View className="w-full items-center gap-6 px-4">
           <View className="w-full items-center gap-2">
             <Label htmlFor="email" className="text-left w-full">
-              *Email
+              Email *
             </Label>
-            <Input id="email" {...register("email")} />
+            <Controller
+              control={control}
+              name="email"
+              render={({ field }) => <Input id="email" {...field} />}
+            />
           </View>
           <View className="w-full flex flex-col items-start gap-2">
             <Label htmlFor="password" className="text-left w-full">
-              *Senha
+              Senha *
             </Label>
             <Controller
               control={control}
@@ -65,7 +68,6 @@ export const LoginScreen = () => {
                 <View className="w-full flex flex-row items-center gap-2">
                   <Input
                     id="password"
-                    placeholder="Senha"
                     secureTextEntry={!isPasswordVisible}
                     className="flex-1"
                     returnKeyType="done"
@@ -81,7 +83,7 @@ export const LoginScreen = () => {
                     <Icon
                       as={isPasswordVisible ? EyeOff : Eye}
                       size={20}
-                      className="text-muted"
+                      className="text-muted-foreground"
                     />
                   </Button>
                 </View>

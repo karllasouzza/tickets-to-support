@@ -1,6 +1,7 @@
 import { createUser } from "@/data/states/user";
 import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner-native";
 import z from "zod";
 
@@ -15,6 +16,7 @@ type CreateAccountFormSchema = z.infer<typeof createAccountFormSchema>;
 
 export default function useCreateAccountData() {
   const { handleSubmit, control, setFocus } = useForm<CreateAccountFormSchema>({
+    resolver: zodResolver(createAccountFormSchema),
     defaultValues: {
       name: "",
       email: "",

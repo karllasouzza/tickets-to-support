@@ -1,6 +1,7 @@
 import { getUser, updateUser } from "@/data/states/user";
 import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { toast } from "sonner-native";
 import z from "zod";
 
@@ -13,7 +14,9 @@ const loginFormSchema = z.object({
 type LoginFormSchema = z.infer<typeof loginFormSchema>;
 
 export const useLoginData = () => {
-  const { register, handleSubmit, control } = useForm<LoginFormSchema>();
+  const { handleSubmit, control } = useForm<LoginFormSchema>({
+    resolver: zodResolver(loginFormSchema),
+  });
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
   const onSubmit: SubmitHandler<LoginFormSchema> = (data) => {
@@ -43,7 +46,6 @@ export const useLoginData = () => {
   };
 
   return {
-    register,
     handleSubmit,
     control,
     onSubmit,

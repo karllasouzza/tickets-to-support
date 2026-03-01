@@ -10,9 +10,14 @@ export type PublicRoutesParamList = {
   Login: undefined;
 };
 
-export type AuthenticatedRoutesParamList = {
+export type AuthenticatedTabsParamList = {
   Home: undefined;
   CreateTicket: undefined;
   DashboardScreen: undefined;
   Profile: undefined;
+};
+
+export type AuthenticatedRoutesParamList = {
+  Tabs: undefined;
+  TicketDetail: { ticketId: string };
 };
