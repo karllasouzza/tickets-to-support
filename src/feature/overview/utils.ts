@@ -1,7 +1,7 @@
 import { ImageSourcePropType } from "react-native";
-import Illustration1 from "../../../assets/images/pexels-snapwire-7470.jpg";
-import Illustration2 from "../../../assets/images/pexels-snapwire-7470.jpg";
-import Illustration3 from "../../../assets/images/pexels-snapwire-7470.jpg";
+import Illustration1 from "../../../assets/images/overview-card-1.png";
+import Illustration2 from "../../../assets/images/overview-card-2.png";
+import Illustration3 from "../../../assets/images/overview-card-3.png";
 
 export interface OverviewSlide {
   content: {

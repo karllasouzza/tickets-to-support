@@ -27,7 +27,7 @@ export const OverviewActions = React.memo(
             onPress={onPrevious}
             testID="overview-action-previous"
           >
-            <Icon as={ArrowLeft} size={20} className="text-muted" />
+            <Icon as={ArrowLeft} size={20} className="text-foreground" />
           </Button>
         )}
 
