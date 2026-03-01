@@ -9,7 +9,9 @@
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "noEmit": true
+    "noEmit": true,
+    "strict": true,
+    "moduleResolution": "bundler"
   },
   "include": [
     "**/*.ts",

@@ -1,8 +1,13 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { HomeScreen } from "./feature/home/page";
 import { OverviewScreen } from "./feature/overview/page";
+import { AuthScreen } from "./feature/auth/page";
 
-const Stack = createNativeStackNavigator();
+type RootStackParamList = {
+  Overview: undefined;
+  Auth: undefined;
+};
+
+const Stack = createNativeStackNavigator<RootStackParamList>();
 
 export function RootStack() {
   return (
@@ -11,8 +16,8 @@ export function RootStack() {
       initialRouteName="Overview"
       screenOptions={{ headerShown: false }}
     >
-      <Stack.Screen name="Home" component={HomeScreen} />
       <Stack.Screen name="Overview" component={OverviewScreen} />
+      <Stack.Screen name="Auth" component={AuthScreen} />
     </Stack.Navigator>
   );
 }
