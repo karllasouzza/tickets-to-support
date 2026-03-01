@@ -6,7 +6,7 @@ import z from "zod";
 
 const createAccountFormSchema = z.object({
   name: z.string().min(1, "O nome é obrigatório"),
-  email: z.email("Email inválido"),
+  email: z.string().email("Email inválido"),
   password: z.string().min(6, "A senha deve conter no mínimo 6 caracteres"),
   remember: z.boolean().optional(),
 });
@@ -14,8 +14,14 @@ const createAccountFormSchema = z.object({
 type CreateAccountFormSchema = z.infer<typeof createAccountFormSchema>;
 
 export default function useCreateAccountData() {
-  const { register, handleSubmit, control, setFocus } =
-    useForm<CreateAccountFormSchema>();
+  const { handleSubmit, control, setFocus } = useForm<CreateAccountFormSchema>({
+    defaultValues: {
+      name: "",
+      email: "",
+      password: "",
+      remember: false,
+    },
+  });
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
 
   const onSubmit: SubmitHandler<CreateAccountFormSchema> = (data) => {
@@ -25,7 +31,11 @@ export default function useCreateAccountData() {
     }
 
     try {
-      const user = createUser(data);
+      const user = createUser({
+        ...data,
+        name: data.name.trim(),
+        email: data.email.trim(),
+      });
 
       if (!user) throw new Error("Error on create user");
 
@@ -40,7 +50,6 @@ export default function useCreateAccountData() {
   };
 
   return {
-    register,
     handleSubmit,
     control,
     setFocus,

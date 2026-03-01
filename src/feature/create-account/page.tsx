@@ -16,7 +16,6 @@ import Illustration1 from "../../../assets/images/pexels-snapwire-7470.jpg";
 
 export const CreateAccountScreen = () => {
   const {
-    register,
     handleSubmit,
     control,
     setFocus,
@@ -52,12 +51,19 @@ export const CreateAccountScreen = () => {
           <Label htmlFor="name" className="text-left w-full">
             *Nome
           </Label>
-          <Input
-            id="name"
-            returnKeyType="next"
-            blurOnSubmit={false}
-            onSubmitEditing={() => setFocus("email")}
-            {...register("name")}
+          <Controller
+            control={control}
+            name="name"
+            render={({ field: { value, onChange } }) => (
+              <Input
+                id="name"
+                returnKeyType="next"
+                blurOnSubmit={false}
+                onSubmitEditing={() => setFocus("email")}
+                value={value}
+                onChangeText={onChange}
+              />
+            )}
           />
         </View>
 
@@ -65,14 +71,21 @@ export const CreateAccountScreen = () => {
           <Label htmlFor="email" className="text-left w-full">
             *Email
           </Label>
-          <Input
-            id="email"
-            placeholder="Email"
-            returnKeyType="next"
-            blurOnSubmit={false}
-            keyboardType="email-address"
-            onSubmitEditing={() => setFocus("password")}
-            {...register("email")}
+          <Controller
+            control={control}
+            name="email"
+            render={({ field: { value, onChange } }) => (
+              <Input
+                id="email"
+                placeholder="Email"
+                returnKeyType="next"
+                blurOnSubmit={false}
+                keyboardType="email-address"
+                onSubmitEditing={() => setFocus("password")}
+                value={value}
+                onChangeText={onChange}
+              />
+            )}
           />
         </View>
 
