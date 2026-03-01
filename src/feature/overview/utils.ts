@@ -15,24 +15,25 @@ export const OVERVIEW_PAGES: OverviewSlide[] = [
   {
     content: {
       img: Illustration1,
-      title: "Receba ajuda instantânea",
+      title: "Gerencie seus tickets",
       subtitle:
-        "Obtenha respostas rápidas para suas dúvidas, a qualquer hora do dia!",
+        "Acompanhe todos os chamados de suporte em um único lugar, organizados por data de abertura.",
     },
   },
   {
     content: {
       img: Illustration2,
-      title: "Evite anotações físicas",
+      title: "Abra chamados rapidamente",
       subtitle:
-        "Marque o fim da dependência exclusiva de papel para anotar suas compras!",
+        "Crie novos tickets com título, detalhes e prazo de encerramento em poucos segundos.",
     },
   },
   {
     content: {
       img: Illustration3,
-      title: "Liste suas financias",
-      subtitle: "Marque todas as suas financias em um único lugar!",
+      title: "Visualize sua performance",
+      subtitle:
+        "Acompanhe métricas, status dos chamados e os tickets resolvidos mais rapidamente no dashboard.",
     },
   },
 ];
