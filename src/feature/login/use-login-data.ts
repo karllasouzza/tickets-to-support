@@ -1,3 +1,4 @@
+import { getUser, updateUser } from "@/data/states/user";
 import { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "sonner-native";
@@ -18,7 +19,25 @@ export const useLoginData = () => {
   const onSubmit: SubmitHandler<LoginFormSchema> = (data) => {
     if (loginFormSchema.safeParse(data).error) {
       toast.error("Por favor, preencha todos os campos corretamente.");
+      return;
     }
+
+    const storedUser = getUser();
+
+    if (!storedUser) {
+      toast.error("Nenhuma conta encontrada. Crie uma conta primeiro.");
+      return;
+    }
+
+    const isInvalidCredentials =
+      storedUser.email !== data.email || storedUser.password !== data.password;
+
+    if (isInvalidCredentials) {
+      toast.error("Email ou senha inválidos.");
+      return;
+    }
+
+    updateUser({ remember: data.remember ?? false });
 
     toast.success("Login realizado com sucesso!");
   };
