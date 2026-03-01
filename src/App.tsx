@@ -10,14 +10,14 @@ import "./styles/global.css";
 function App() {
   return (
     <SafeAreaProvider>
-      <GestureHandlerRootView>
+      <GestureHandlerRootView style={{ flex: 1 }}>
         <RootLayout>
           <NavigationContainer>
             <RootStack />
           </NavigationContainer>
         </RootLayout>
+        <Toaster />
       </GestureHandlerRootView>
-      <Toaster />
     </SafeAreaProvider>
   );
 }
