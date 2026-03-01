@@ -7,11 +7,14 @@ import { Text } from "@/components/ui/text";
 import { Button } from "@/components/ui/button";
 import { Icon } from "@/components/ui/icon";
 import { useNavigation } from "@react-navigation/native";
+import { StackNavigationProp } from "@react-navigation/stack";
+import { PublicRoutesParamList } from "@/router/types";
 
 import Illustration1 from "../../../assets/images/pexels-snapwire-7470.jpg";
 
 export const AuthScreen = () => {
-  const navigation = useNavigation();
+  const navigation =
+    useNavigation<StackNavigationProp<PublicRoutesParamList>>();
   return (
     <SafeAreaView className="w-full h-full flex flex-col justify-between bg-background items-center gap-6 py-4">
       <View className="max-h-[400px] h-[400px] w-full flex-1 flex flex-col items-center justify-center px-6">
