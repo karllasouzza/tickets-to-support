@@ -1,11 +1,18 @@
 import React from "react";
 import { View } from "react-native";
 import { Button } from "@/components/ui/button";
-import { Link } from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/native";
+import { StackNavigationProp } from "@react-navigation/stack";
 import { Text } from "@/components/ui/text";
 import { Icon } from "@/components/ui/icon";
 import { ArrowLeft } from "lucide-react-native";
 import { OVERVIEW_PAGES } from "../utils";
+import { PublicRoutesParamList } from "@/router/types";
+
+type OverviewNavigationProp = StackNavigationProp<
+  PublicRoutesParamList,
+  "Overview"
+>;
 
 interface OverviewActionsProps {
   currentSlide: number;
@@ -15,6 +22,12 @@ interface OverviewActionsProps {
 
 export const OverviewActions = React.memo(
   ({ currentSlide, onNext, onPrevious }: OverviewActionsProps) => {
+    const navigator = useNavigation<OverviewNavigationProp>();
+
+    const handleStart = () => {
+      navigator.navigate("Auth");
+    };
+
     return (
       <View
         className="w-full flex-row items-center justify-center gap-4 px-8 py-4"
@@ -37,12 +50,11 @@ export const OverviewActions = React.memo(
             size="lg"
             className="flex-1"
             testID="overview-action-start"
+            onPress={handleStart}
           >
-            <Link screen="Auth" params={{}}>
-              <Text className="text-primary-foreground font-semibold text-base">
-                Começar
-              </Text>
-            </Link>
+            <Text className="text-primary-foreground font-semibold text-base">
+              Começar
+            </Text>
           </Button>
         ) : (
           <Button

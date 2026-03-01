@@ -2,13 +2,7 @@ import { useEffect, useState } from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createStackNavigator } from "@react-navigation/stack";
 import { useIsFocused } from "@react-navigation/native";
-import {
-  ChevronLeft,
-  Plus,
-  SquareKanban,
-  Ticket,
-  User,
-} from "lucide-react-native";
+import { ChevronLeft, Plus, SquareKanban, Ticket } from "lucide-react-native";
 import { Keyboard, GestureResponderEvent } from "react-native";
 
 import { cn } from "@/lib/utils";
@@ -18,7 +12,6 @@ import { Icon } from "@/components/ui/icon";
 import { HomeScreen } from "@/feature/home/page";
 import CreateTicketScreen from "@/feature/create-ticket/page";
 import DashboardScreen from "@/feature/dashboard/page";
-import ProfileScreen from "@/feature/profile/page";
 import { TicketDetailScreen } from "@/feature/ticket-detail/page";
 import {
   AuthenticatedRoutesParamList,
@@ -183,31 +176,6 @@ function TabNavigator() {
               )}
             >
               Dashboard
-            </Text>
-          ),
-        }}
-      />
-      <Tab.Screen
-        name="Profile"
-        component={ProfileScreen}
-        options={{
-          tabBarIcon: ({ focused }) => (
-            <Icon
-              as={User}
-              className={cn(
-                "p-2",
-                focused ? "text-primary" : "text-muted-foreground",
-              )}
-            />
-          ),
-          tabBarLabel: ({ focused }) => (
-            <Text
-              className={cn(
-                "text-xs",
-                focused ? "text-primary" : "text-muted-foreground",
-              )}
-            >
-              Perfil
             </Text>
           ),
         }}

@@ -11,10 +11,14 @@ export type PublicRoutesParamList = {
 };
 
 export type AuthenticatedTabsParamList = {
-  Home: undefined;
+  Home:
+    | {
+        createdTicketId?: string;
+        refreshToken?: number;
+      }
+    | undefined;
   CreateTicket: undefined;
   DashboardScreen: undefined;
-  Profile: undefined;
 };
 
 export type AuthenticatedRoutesParamList = {

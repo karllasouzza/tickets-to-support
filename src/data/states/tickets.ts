@@ -12,6 +12,7 @@ export type Ticket = {
   closingDeadlineAt: string;
   createdAt: string;
   closedAt?: string;
+  closingDescription?: string;
   status: TicketStatus;
 };
 
@@ -66,6 +67,7 @@ export function updateTicket(
     merged.closedAt = new Date().toISOString();
   } else if (data.status === "open") {
     merged.closedAt = undefined;
+    merged.closingDescription = undefined;
   }
 
   const newTickets = [...current];

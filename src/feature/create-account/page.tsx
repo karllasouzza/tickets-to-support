@@ -77,7 +77,6 @@ export const CreateAccountScreen = () => {
             render={({ field: { value, onChange } }) => (
               <Input
                 id="email"
-                placeholder="Email"
                 returnKeyType="next"
                 blurOnSubmit={false}
                 keyboardType="email-address"
@@ -100,7 +99,6 @@ export const CreateAccountScreen = () => {
               <View className="w-full flex flex-row items-center gap-2">
                 <Input
                   id="password"
-                  placeholder="Senha"
                   secureTextEntry={!isPasswordVisible}
                   className="flex-1"
                   returnKeyType="done"

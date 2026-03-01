@@ -3,7 +3,13 @@ import { ScrollView, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { observer } from "@legendapp/state/react";
 import { type RouteProp, useRoute } from "@react-navigation/native";
-import { CalendarCheck, CalendarClock, CalendarX } from "lucide-react-native";
+import {
+  CalendarCheck,
+  CalendarClock,
+  CalendarX,
+  CircleCheckBig,
+} from "lucide-react-native";
+import { Controller } from "react-hook-form";
 
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -11,6 +17,8 @@ import { Icon } from "@/components/ui/icon";
 import { Text } from "@/components/ui/text";
 import { type TicketStatus } from "@/data/states/tickets";
 import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 
 import { type AuthenticatedRoutesParamList } from "@/router/types";
 import { formatDateTime, formatDate } from "@/utils/date-utils";
@@ -20,7 +28,6 @@ import {
 } from "@/feature/core/utils.ts/ticket-utils";
 import useTicketDetailData from "./use-ticket-detail-data";
 import { StatusSelector } from "./components/status-selector";
-import { Separator } from "@rn-primitives/select";
 
 const STATUS_OPTIONS: { status: TicketStatus; label: string }[] = [
   { status: "open", label: "Aberto" },
@@ -38,9 +45,13 @@ export const TicketDetailScreen = observer(() => {
   const { params } = useRoute<TicketDetailRouteProp>();
   const {
     ticket,
+    control,
+    errors,
+    isSubmitting,
+    selectedStatus,
+    handleSubmit,
+    onSubmit,
     handleStatusChange,
-    statusSelected,
-    setStatusSelected,
     handleBack,
     handleDeleteTicket,
   } = useTicketDetailData(params.ticketId);
@@ -60,6 +71,10 @@ export const TicketDetailScreen = observer(() => {
 
   const label = getStatusLabel(ticket.status);
   const color = getStatusColor(ticket.status);
+  const isClosingStatus =
+    selectedStatus === "closed" ||
+    selectedStatus === "improper" ||
+    selectedStatus === "canceled";
 
   return (
     <SafeAreaView edges={["bottom"]} className="flex-1 bg-background">
@@ -141,21 +156,61 @@ export const TicketDetailScreen = observer(() => {
 
         <Card className="py-4 gap-3">
           <CardHeader className="px-4">
-            <CardTitle className="text-base">Alterar Status</CardTitle>
+            <View className="flex-row items-center gap-2">
+              <Icon as={CircleCheckBig} size={18} className="text-primary" />
+              <CardTitle className="text-base">Encerramento</CardTitle>
+            </View>
           </CardHeader>
-          <CardContent className="px-4 gap-2">
-            <StatusSelector
-              currentStatus={ticket.status}
-              selectedStatus={statusSelected}
-              onStatusChange={setStatusSelected}
-              statusOptions={STATUS_OPTIONS}
-            />
+          <CardContent className="px-4 gap-4">
+            <View className="gap-1.5">
+              <Label>Status de Fechamento</Label>
+              <StatusSelector
+                currentStatus={ticket.status}
+                selectedStatus={selectedStatus}
+                onStatusChange={handleStatusChange}
+                statusOptions={STATUS_OPTIONS}
+              />
+            </View>
 
-            <Button onPress={() => handleStatusChange(statusSelected)}>
-              <Text>Aplica mudanças</Text>
+            <View className="gap-1.5">
+              <Label>Descrição do Encerramento</Label>
+              <Controller
+                control={control}
+                name="closingDescription"
+                render={({ field: { value, onChange, onBlur } }) => (
+                  <Textarea
+                    value={value ?? ""}
+                    onChangeText={onChange}
+                    onBlur={onBlur}
+                    placeholder="Descreva a solução aplicada ou o motivo do encerramento..."
+                    numberOfLines={4}
+                  />
+                )}
+              />
+
+              {errors.closingDescription?.message ? (
+                <Text className="text-xs text-destructive">
+                  {errors.closingDescription.message}
+                </Text>
+              ) : null}
+            </View>
+
+            <Button
+              onPress={handleSubmit(onSubmit)}
+              disabled={isSubmitting}
+              className="w-full"
+            >
+              <View className="flex-row items-center justify-center gap-2">
+                <Icon
+                  as={CircleCheckBig}
+                  size={16}
+                  className="text-primary-foreground"
+                />
+                <Text className="text-primary-foreground font-semibold">
+                  {isClosingStatus ? "Finalizar Chamado" : "Salvar Alterações"}
+                </Text>
+              </View>
             </Button>
-
-            <Separator />
 
             <Button variant="destructive" onPress={handleDeleteTicket}>
               <Text>Deletar Ticket</Text>
