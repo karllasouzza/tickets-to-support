@@ -3,8 +3,9 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { getUser } from "../data/states/user";
 import PublicRoutes from "./public-routes";
 import AuthenticatedRoutes from "./authenticated-routes";
+import { RootStackParamList } from "./types";
 
-const Stack = createStackNavigator();
+const Stack = createStackNavigator<RootStackParamList>();
 
 export function RootStack() {
   const user = getUser();

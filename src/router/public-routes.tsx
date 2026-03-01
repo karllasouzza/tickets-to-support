@@ -5,8 +5,9 @@ import { AuthScreen } from "@/feature/auth/page";
 import { CreateAccountScreen } from "@/feature/create-account/page";
 import { LoginScreen } from "@/feature/login/page";
 import { OverviewScreen } from "@/feature/overview/page";
+import { PublicRoutesParamList } from "./types";
 
-const Stack = createStackNavigator();
+const Stack = createStackNavigator<PublicRoutesParamList>();
 
 export default function PublicRoutes() {
   const user = getUser();

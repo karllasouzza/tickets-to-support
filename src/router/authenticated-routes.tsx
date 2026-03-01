@@ -4,8 +4,9 @@ import { HomeScreen } from "@/feature/home/page";
 import CreateTicketScreen from "@/feature/create-ticket/page";
 import DashboardScreen from "@/feature/dashboard/page";
 import ProfileScreen from "@/feature/profile/page";
+import { AuthenticatedRoutesParamList } from "./types";
 
-const Tab = createNativeBottomTabNavigator();
+const Tab = createNativeBottomTabNavigator<AuthenticatedRoutesParamList>();
 
 export default function AuthenticatedRoutes() {
   return (
