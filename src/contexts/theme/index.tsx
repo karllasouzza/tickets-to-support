@@ -26,10 +26,7 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const currentTheme = useMemo(() => {
     if (safeColorScheme === "dark") {
-      return {
-        ...darkTheme,
-        colorBackground: "#000000",
-      };
+      return darkTheme;
     }
     return lightTheme;
   }, [safeColorScheme]);
@@ -40,6 +37,7 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
     >
       <StatusBar
         barStyle={safeColorScheme === "dark" ? "light-content" : "dark-content"}
+        backgroundColor={currentTheme.colorBackground}
       />
       {children}
     </ThemeContext.Provider>

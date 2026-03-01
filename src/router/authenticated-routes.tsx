@@ -1,5 +1,7 @@
+import { useEffect, useState } from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Plus, SquareKanban, Ticket, User } from "lucide-react-native";
+import { Keyboard } from "react-native";
 
 import { cn } from "@/lib/utils";
 import { Text } from "@/components/ui/text";
@@ -18,26 +20,45 @@ const Tab = createBottomTabNavigator<AuthenticatedRoutesParamList>();
 
 export default function AuthenticatedRoutes() {
   const { colorScheme } = useColorScheme();
+  const theme = THEME[colorScheme || "light"];
+  const [keyboardVisible, setKeyboardVisible] = useState(false);
+
+  useEffect(() => {
+    const show = Keyboard.addListener("keyboardDidShow", () =>
+      setKeyboardVisible(true),
+    );
+    const hide = Keyboard.addListener("keyboardDidHide", () =>
+      setKeyboardVisible(false),
+    );
+    return () => {
+      show.remove();
+      hide.remove();
+    };
+  }, []);
+
+  const defaultTabBarStyle = keyboardVisible
+    ? { display: "none" as const }
+    : {
+        backgroundColor: theme.tabBar,
+        height: 60,
+        padding: 10,
+        borderTopColor: theme.border,
+        borderTopWidth: 1,
+      };
+
   return (
     <Tab.Navigator
       screenOptions={{
         headerShown: true,
         headerStyle: {
-          backgroundColor: THEME[colorScheme || "light"].background,
-          borderBottomColor: THEME[colorScheme || "light"].border,
+          backgroundColor: theme.background,
+          borderBottomColor: theme.border,
           borderBottomWidth: 1,
-          padding: 10,
         },
         headerTitleStyle: {
-          color: THEME[colorScheme || "light"].foreground,
+          color: theme.foreground,
         },
-        tabBarStyle: {
-          backgroundColor: THEME[colorScheme || "light"].tabBar,
-          height: 60,
-          padding: 10,
-          borderTopColor: THEME[colorScheme || "light"].border,
-          borderTopWidth: 1,
-        },
+        tabBarStyle: defaultTabBarStyle,
       }}
     >
       <Tab.Screen
@@ -47,12 +68,18 @@ export default function AuthenticatedRoutes() {
           tabBarIcon: ({ focused }) => (
             <Icon
               as={Ticket}
-              className={cn("p-2", focused ? "text-primary" : "text-muted")}
+              className={cn(
+                "p-2",
+                focused ? "text-primary" : "text-muted-foreground",
+              )}
             />
           ),
           tabBarLabel: ({ focused }) => (
             <Text
-              className={cn("text-xs", focused ? "text-primary" : "text-muted")}
+              className={cn(
+                "text-xs",
+                focused ? "text-primary" : "text-muted-foreground",
+              )}
             >
               Tickets
             </Text>
@@ -64,24 +91,19 @@ export default function AuthenticatedRoutes() {
         name="CreateTicket"
         component={CreateTicketScreen}
         options={{
+          title: "Criar Ticket",
           tabBarIcon: ({ focused }) => (
             <Icon
               as={Plus}
-              className={cn("p-2", focused ? "text-primary" : "text-muted")}
+              className={cn(
+                "p-2",
+                focused ? "text-primary" : "text-muted-foreground",
+              )}
             />
           ),
-          tabBarStyle: {
-            backgroundColor: "transparent",
-            position: "absolute",
-            height: 60,
-            paddingBottom: 5,
-          },
           tabBarItemStyle: {
             width: 60,
             height: 60,
-            justifyContent: "center",
-            alignItems: "center",
-            marginBottom: 20,
           },
           tabBarButton: ({ children, onPress }) => (
             <Button
@@ -95,7 +117,10 @@ export default function AuthenticatedRoutes() {
           ),
           tabBarLabel: ({ focused }) => (
             <Text
-              className={cn("text-xs", focused ? "text-primary" : "text-muted")}
+              className={cn(
+                "text-xs",
+                focused ? "text-primary" : "text-muted-foreground",
+              )}
             >
               Criar Ticket
             </Text>
@@ -106,15 +131,22 @@ export default function AuthenticatedRoutes() {
         name="DashboardScreen"
         component={DashboardScreen}
         options={{
+          title: "Dashboard",
           tabBarIcon: ({ focused }) => (
             <Icon
               as={SquareKanban}
-              className={cn("p-2", focused ? "text-primary" : "text-muted")}
+              className={cn(
+                "p-2",
+                focused ? "text-primary" : "text-muted-foreground",
+              )}
             />
           ),
           tabBarLabel: ({ focused }) => (
             <Text
-              className={cn("text-xs", focused ? "text-primary" : "text-muted")}
+              className={cn(
+                "text-xs",
+                focused ? "text-primary" : "text-muted-foreground",
+              )}
             >
               Dashboard
             </Text>
@@ -128,12 +160,18 @@ export default function AuthenticatedRoutes() {
           tabBarIcon: ({ focused }) => (
             <Icon
               as={User}
-              className={cn("p-2", focused ? "text-primary" : "text-muted")}
+              className={cn(
+                "p-2",
+                focused ? "text-primary" : "text-muted-foreground",
+              )}
             />
           ),
           tabBarLabel: ({ focused }) => (
             <Text
-              className={cn("text-xs", focused ? "text-primary" : "text-muted")}
+              className={cn(
+                "text-xs",
+                focused ? "text-primary" : "text-muted-foreground",
+              )}
             >
               Perfil
             </Text>
