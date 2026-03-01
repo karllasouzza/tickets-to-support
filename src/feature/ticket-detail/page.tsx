@@ -48,6 +48,7 @@ export const TicketDetailScreen = observer(() => {
     control,
     errors,
     isSubmitting,
+    isTicketLocked,
     selectedStatus,
     handleSubmit,
     onSubmit,
@@ -154,69 +155,73 @@ export const TicketDetailScreen = observer(() => {
           </CardContent>
         </Card>
 
-        <Card className="py-4 gap-3">
-          <CardHeader className="px-4">
-            <View className="flex-row items-center gap-2">
-              <Icon as={CircleCheckBig} size={18} className="text-primary" />
-              <CardTitle className="text-base">Encerramento</CardTitle>
-            </View>
-          </CardHeader>
-          <CardContent className="px-4 gap-4">
-            <View className="gap-1.5">
-              <Label>Status de Fechamento</Label>
-              <StatusSelector
-                currentStatus={ticket.status}
-                selectedStatus={selectedStatus}
-                onStatusChange={handleStatusChange}
-                statusOptions={STATUS_OPTIONS}
-              />
-            </View>
+        <View className="gap-6 px-4 py-1">
+          <View className="flex-row items-center gap-2">
+            <Icon as={CircleCheckBig} size={18} className="text-primary" />
+            <Text className="text-base font-semibold">Encerramento</Text>
+          </View>
 
-            <View className="gap-1.5">
-              <Label>Descrição do Encerramento</Label>
-              <Controller
-                control={control}
-                name="closingDescription"
-                render={({ field: { value, onChange, onBlur } }) => (
-                  <Textarea
-                    value={value ?? ""}
-                    onChangeText={onChange}
-                    onBlur={onBlur}
-                    placeholder="Descreva a solução aplicada ou o motivo do encerramento..."
-                    numberOfLines={4}
-                  />
-                )}
-              />
+          <View className="gap-2">
+            <Label className="font-semibold">Status de Fechamento *</Label>
+            <StatusSelector
+              currentStatus={ticket.status}
+              selectedStatus={selectedStatus}
+              onStatusChange={handleStatusChange}
+              statusOptions={STATUS_OPTIONS}
+              disabled={isTicketLocked}
+            />
+          </View>
 
-              {errors.closingDescription?.message ? (
-                <Text className="text-xs text-destructive">
-                  {errors.closingDescription.message}
-                </Text>
-              ) : null}
-            </View>
-
-            <Button
-              onPress={handleSubmit(onSubmit)}
-              disabled={isSubmitting}
-              className="w-full"
-            >
-              <View className="flex-row items-center justify-center gap-2">
-                <Icon
-                  as={CircleCheckBig}
-                  size={16}
-                  className="text-primary-foreground"
+          <View className="gap-2">
+            <Label className="font-semibold">Descrição do Encerramento *</Label>
+            <Controller
+              control={control}
+              name="closingDescription"
+              render={({ field: { value, onChange, onBlur } }) => (
+                <Textarea
+                  className="min-h-32"
+                  value={value ?? ""}
+                  onChangeText={onChange}
+                  onBlur={onBlur}
+                  editable={!isTicketLocked}
+                  placeholder="Descreva a solução aplicada ou o motivo do encerramento..."
+                  numberOfLines={4}
                 />
-                <Text className="text-primary-foreground font-semibold">
-                  {isClosingStatus ? "Finalizar Chamado" : "Salvar Alterações"}
-                </Text>
-              </View>
-            </Button>
+              )}
+            />
 
-            <Button variant="destructive" onPress={handleDeleteTicket}>
-              <Text>Deletar Ticket</Text>
-            </Button>
-          </CardContent>
-        </Card>
+            {errors.closingDescription?.message ? (
+              <Text className="text-xs text-destructive">
+                {errors.closingDescription.message}
+              </Text>
+            ) : null}
+          </View>
+
+          <Button
+            onPress={handleSubmit(onSubmit)}
+            disabled={isSubmitting || isTicketLocked}
+            className="w-full"
+          >
+            <View className="flex-row items-center justify-center gap-2">
+              <Icon
+                as={CircleCheckBig}
+                size={16}
+                className="text-primary-foreground"
+              />
+              <Text className="text-primary-foreground font-semibold">
+                {isTicketLocked
+                  ? "Chamado Finalizado"
+                  : isClosingStatus
+                    ? "Finalizar Chamado"
+                    : "Salvar Alterações"}
+              </Text>
+            </View>
+          </Button>
+
+          <Button variant="destructive" onPress={handleDeleteTicket}>
+            <Text>Deletar Ticket</Text>
+          </Button>
+        </View>
       </ScrollView>
     </SafeAreaView>
   );

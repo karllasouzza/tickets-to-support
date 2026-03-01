@@ -10,6 +10,8 @@ import {
   type TicketStatus,
 } from "@/data/states/tickets";
 import { useNavigation } from "@react-navigation/native";
+import { type StackNavigationProp } from "@react-navigation/stack";
+import { type AuthenticatedRoutesParamList } from "@/router/types";
 
 const CLOSED_STATUSES: TicketStatus[] = ["closed", "improper", "canceled"];
 
@@ -57,7 +59,12 @@ export default function useTicketDetailData(ticketId: string) {
     });
   }, [ticket?.status, ticket?.closingDescription, reset]);
 
-  const navigator = useNavigation();
+  const navigator =
+    useNavigation<StackNavigationProp<AuthenticatedRoutesParamList>>();
+
+  const isTicketLocked = Boolean(
+    ticket && CLOSED_STATUSES.includes(ticket.status),
+  );
 
   const handleBack = () => {
     navigator.goBack();
@@ -81,6 +88,10 @@ export default function useTicketDetailData(ticketId: string) {
   const onSubmit: SubmitHandler<TicketClosureFormData> = useCallback(
     (data) => {
       if (!ticket) return;
+      if (isTicketLocked) {
+        toast.error("Este ticket já foi finalizado e não pode ser editado.");
+        return;
+      }
 
       const nextStatus = data.status;
       const isClosingStatus = CLOSED_STATUSES.includes(nextStatus);
@@ -95,21 +106,27 @@ export default function useTicketDetailData(ticketId: string) {
 
       if (updated) {
         toast.success("Ticket atualizado com sucesso!");
+
+        if (isClosingStatus) {
+          navigator.navigate("Tabs");
+        }
       } else {
         toast.error("Erro ao atualizar o ticket.");
       }
     },
-    [ticket, ticketId],
+    [ticket, ticketId, isTicketLocked, navigator],
   );
 
   const handleStatusChange = useCallback(
     (newStatus: TicketStatus) => {
+      if (isTicketLocked) return;
+
       setValue("status", newStatus, {
         shouldDirty: true,
         shouldValidate: true,
       });
     },
-    [setValue],
+    [setValue, isTicketLocked],
   );
 
   return {
@@ -117,6 +134,7 @@ export default function useTicketDetailData(ticketId: string) {
     control,
     errors,
     isSubmitting,
+    isTicketLocked,
     selectedStatus,
     handleSubmit,
     onSubmit,

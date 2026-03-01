@@ -10,6 +10,7 @@ interface StatusSelectorProps {
   onStatusChange: (status: TicketStatus) => void;
   statusOptions: { status: TicketStatus; label: string }[];
   activeStatusColor?: string;
+  disabled?: boolean;
 }
 
 export function StatusSelector({
@@ -18,6 +19,7 @@ export function StatusSelector({
   onStatusChange,
   statusOptions,
   activeStatusColor,
+  disabled = false,
 }: StatusSelectorProps) {
   return (
     <View className="gap-2">
@@ -32,6 +34,7 @@ export function StatusSelector({
               variant={isSelected ? "default" : "outline"}
               size="sm"
               onPress={() => onStatusChange(status)}
+              disabled={disabled}
               className="min-w-[120px]"
             >
               <Text
