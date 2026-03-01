@@ -18,7 +18,7 @@ module.exports = {
     "\\.(jpg|jpeg|png|gif|svg|webp)$": "<rootDir>/__mocks__/fileMock.js",
   },
   transformIgnorePatterns: [
-    "node_modules/(?!(@react-navigation|@react-native-community|@rn-primitives|lucide-react-native|react-native-reanimated|nativewind|react-native-svg|react-native-css-interop|@react-native|react-native)/)",
+    "node_modules/(?!(@react-navigation|@react-native-community|@rn-primitives|lucide-react-native|react-native-reanimated|nativewind|react-native-svg|react-native-css-interop|@react-native|react-native|sonner-native)/)",
   ],
   testPathIgnorePatterns: ["/node_modules/", "/android/", "/ios/"],
   collectCoverageFrom: [
@@ -26,6 +26,7 @@ module.exports = {
     "!src/**/*.d.ts",
     "!src/**/index.{ts,tsx}",
   ],
+  setupFiles: ["./node_modules/react-native-gesture-handler/jestSetup.js"],
   setupFilesAfterEnv: ["<rootDir>/__tests__/setup.tsx"],
   testEnvironment: "node",
 };
