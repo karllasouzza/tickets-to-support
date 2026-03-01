@@ -3,6 +3,7 @@ import { toast } from "sonner-native";
 import {
   getTicketById,
   updateTicket,
+  deleteTicket,
   type TicketStatus,
 } from "@/data/states/tickets";
 import { useNavigation } from "@react-navigation/native";
@@ -19,6 +20,19 @@ export default function useTicketDetailData(ticketId: string) {
   const handleBack = () => {
     navigator.goBack();
   };
+
+  const handleDeleteTicket = useCallback(() => {
+    if (!ticket) return;
+
+    const deleted = deleteTicket(ticketId);
+
+    if (deleted) {
+      toast.success("Ticket deletado com sucesso!");
+      navigator.goBack();
+    } else {
+      toast.error("Erro ao deletar o ticket.");
+    }
+  }, [ticket, ticketId, navigator]);
 
   const handleStatusChange = useCallback(
     (newStatus: TicketStatus) => {
@@ -42,5 +56,6 @@ export default function useTicketDetailData(ticketId: string) {
     statusSelected,
     setStatusSelected,
     handleBack,
+    handleDeleteTicket,
   };
 }

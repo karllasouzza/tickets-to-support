@@ -2,7 +2,13 @@ import { useEffect, useState } from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createStackNavigator } from "@react-navigation/stack";
 import { useIsFocused } from "@react-navigation/native";
-import { Plus, SquareKanban, Ticket, User } from "lucide-react-native";
+import {
+  ChevronLeft,
+  Plus,
+  SquareKanban,
+  Ticket,
+  User,
+} from "lucide-react-native";
 import { Keyboard, GestureResponderEvent } from "react-native";
 
 import { cn } from "@/lib/utils";
@@ -224,7 +230,7 @@ export default function AuthenticatedRoutes() {
       <Stack.Screen
         name="TicketDetail"
         component={TicketDetailScreen}
-        options={{
+        options={({ navigation }) => ({
           headerShown: true,
           headerTitle: "Detalhes do Ticket",
           headerStyle: {
@@ -236,7 +242,16 @@ export default function AuthenticatedRoutes() {
             color: theme.foreground,
           },
           headerTintColor: theme.primary,
-        }}
+          headerLeft: () => (
+            <Button
+              variant="ghost"
+              onPress={() => navigation.goBack()}
+              className="pl-3"
+            >
+              <Icon as={ChevronLeft} className="text-primary" />
+            </Button>
+          ),
+        })}
       />
     </Stack.Navigator>
   );

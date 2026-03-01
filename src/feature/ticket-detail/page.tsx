@@ -20,6 +20,7 @@ import {
 } from "@/feature/core/utils.ts/ticket-utils";
 import useTicketDetailData from "./use-ticket-detail-data";
 import { StatusSelector } from "./components/status-selector";
+import { Separator } from "@rn-primitives/select";
 
 const STATUS_OPTIONS: { status: TicketStatus; label: string }[] = [
   { status: "open", label: "Aberto" },
@@ -41,6 +42,7 @@ export const TicketDetailScreen = observer(() => {
     statusSelected,
     setStatusSelected,
     handleBack,
+    handleDeleteTicket,
   } = useTicketDetailData(params.ticketId);
 
   if (!ticket) {
@@ -151,6 +153,12 @@ export const TicketDetailScreen = observer(() => {
 
             <Button onPress={() => handleStatusChange(statusSelected)}>
               <Text>Aplica mudanças</Text>
+            </Button>
+
+            <Separator />
+
+            <Button variant="destructive" onPress={handleDeleteTicket}>
+              <Text>Deletar Ticket</Text>
             </Button>
           </CardContent>
         </Card>
