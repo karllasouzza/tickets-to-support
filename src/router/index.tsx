@@ -1,23 +1,26 @@
 import { createStackNavigator } from "@react-navigation/stack";
+import { observer } from "@legendapp/state/react";
 
-import { getUser } from "../data/states/user";
+import { user$ } from "../data/states/user";
 import PublicRoutes from "./public-routes";
 import AuthenticatedRoutes from "./authenticated-routes";
 import { RootStackParamList } from "./types";
 
 const Stack = createStackNavigator<RootStackParamList>();
 
-export function RootStack() {
-  const user = getUser();
+export const RootStack = observer(function RootStack() {
+  const user = user$.get();
+  const isAuthenticated = Boolean(user);
+
   return (
     <Stack.Navigator
       id="root"
       initialRouteName={
-        user && user.remember ? "AuthenticatedRoutes" : "PublicRoutes"
+        isAuthenticated ? "AuthenticatedRoutes" : "PublicRoutes"
       }
       screenOptions={{ headerShown: false }}
     >
-      {!user || !user.remember ? (
+      {!isAuthenticated ? (
         <>
           <Stack.Screen name="PublicRoutes" component={PublicRoutes} />
         </>
@@ -31,4 +34,4 @@ export function RootStack() {
       )}
     </Stack.Navigator>
   );
-}
+});
