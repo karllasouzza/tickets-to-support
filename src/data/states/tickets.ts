@@ -11,6 +11,7 @@ export type Ticket = {
   details: string;
   closingDeadlineAt: string;
   createdAt: string;
+  closedAt?: string;
   status: TicketStatus;
 };
 
@@ -44,6 +45,8 @@ export function getTicketById(id: string): Ticket | undefined {
   return current.find((ticket) => ticket.id === id);
 }
 
+const CLOSED_STATUSES: TicketStatus[] = ["closed", "improper", "canceled"];
+
 export function updateTicket(
   id: string,
   data: Partial<Omit<Ticket, "id" | "createdAt">>,
@@ -53,12 +56,23 @@ export function updateTicket(
 
   if (index === -1) return null;
 
-  const updated: Ticket = { ...current[index], ...data };
+  const merged = { ...current[index], ...data };
+
+  if (
+    data.status &&
+    CLOSED_STATUSES.includes(data.status) &&
+    !merged.closedAt
+  ) {
+    merged.closedAt = new Date().toISOString();
+  } else if (data.status === "open") {
+    merged.closedAt = undefined;
+  }
+
   const newTickets = [...current];
-  newTickets[index] = updated;
+  newTickets[index] = merged;
   tickets$.set(newTickets);
 
-  return updated;
+  return merged;
 }
 
 export function deleteTicket(id: string): boolean {
@@ -79,10 +93,11 @@ export function getTop5FastestClosedTickets(): Ticket[] {
   const current = tickets$.get();
 
   return current
+    .filter((ticket) => ticket.closedAt)
     .map((ticket) => ({
       ticket,
       timeToClose:
-        new Date(ticket.closingDeadlineAt).getTime() -
+        new Date(ticket.closedAt!).getTime() -
         new Date(ticket.createdAt).getTime(),
     }))
     .sort((a, b) => a.timeToClose - b.timeToClose)
@@ -135,13 +150,22 @@ export function getDashboardMetrics(): DashboardMetrics {
 
   const totalTickets = current.length;
 
+  const closedTickets = current.filter((t) => t.closedAt);
+
+  if (closedTickets.length === 0) {
+    return {
+      totalTickets,
+      averageClosureTimeMinutes: 0,
+    };
+  }
+
   const averageClosureTimeMs =
-    current.reduce((sum, ticket) => {
+    closedTickets.reduce((sum, ticket) => {
       const closureTime =
-        new Date(ticket.closingDeadlineAt).getTime() -
+        new Date(ticket.closedAt!).getTime() -
         new Date(ticket.createdAt).getTime();
       return sum + closureTime;
-    }, 0) / current.length;
+    }, 0) / closedTickets.length;
 
   const averageClosureTimeMinutes = Math.round(
     averageClosureTimeMs / 1000 / 60,
